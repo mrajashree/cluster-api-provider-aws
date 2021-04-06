@@ -1,5 +1,10 @@
 namespace: capa-system
 
+namePrefix: capa-
+
+commonLabels:
+  cluster.x-k8s.io/provider: "infrastructure-aws"
+
 resources:
 - namespace.yaml
 - credentials.yaml
@@ -7,8 +12,12 @@ resources:
 bases:
 - ../rbac
 - ../manager
+- ../crd
+#- ../webhook # Disable this if you're not using the webhook functionality.
+- ../certmanager
 
 patchesStrategicMerge:
 - manager_credentials_patch.yaml
 - manager_service_account_patch.yaml
 - manager_iam_patch.yaml
+
