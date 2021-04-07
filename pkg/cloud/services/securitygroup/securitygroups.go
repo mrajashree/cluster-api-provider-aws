@@ -57,6 +57,7 @@ var (
 		infrav1.SecurityGroupLB,
 		infrav1.SecurityGroupControlPlane,
 		infrav1.SecurityGroupNode,
+		infrav1.SecurityGroupEtcd,
 	}
 )
 
@@ -478,6 +479,17 @@ func (s *Service) getSecurityGroupIngressRules(role infrav1.SecurityGroupRole) (
 	case infrav1.SecurityGroupLB:
 		// We hand this group off to the in-cluster cloud provider, so these rules aren't used
 		return infrav1.IngressRules{}, nil
+
+	case infrav1.SecurityGroupEtcd:
+		return infrav1.IngressRules{
+			{
+				Description: "Etcd nodes",
+				Protocol:    infrav1.SecurityGroupProtocolTCP,
+				FromPort:    2379,
+				ToPort:      2380,
+				CidrBlocks:  []string{services.AnyIPv4CidrBlock},
+			},
+		}, nil
 	}
 
 	return nil, errors.Errorf("Cannot determine ingress rules for unknown security group role %q", role)

@@ -118,6 +118,12 @@ func (m *MachineScope) Role() string {
 	if util.IsControlPlaneMachine(m.Machine) {
 		return "control-plane"
 	}
+	/*TODO: This etcd-plane label should be added in CAPI and used here, same as the control-plane label.
+	Cannot be added right now, because this is on the branch of CAPA where v1alpha4 is being added and controller-runtime version mismatch causes a lot of compile issues
+	*/
+	if _, ok := m.Machine.ObjectMeta.Labels["cluster.x-k8s.io/etcd-plane"]; ok {
+		return "etcd-plane"
+	}
 	return "node"
 }
 

@@ -405,6 +405,8 @@ var (
 
 	// SecurityGroupLB defines a container for the cloud provider to inject its load balancer ingress rules
 	SecurityGroupLB = SecurityGroupRole("lb")
+
+	SecurityGroupEtcd = SecurityGroupRole("etcd")
 )
 
 // SecurityGroup defines an AWS security group.
